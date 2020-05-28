@@ -1,0 +1,6 @@
+/Users/edisonlee55/Documents/GitHub/YTSubConverterMac/MacApi/bin/Xamarin - Debug/MacApi.dll
+/Users/edisonlee55/Documents/GitHub/YTSubConverterMac/MacApi/bin/Xamarin - Debug/MacApi.pdb
+/Users/edisonlee55/Documents/GitHub/YTSubConverterMac/MacApi/obj/Xamarin - Debug/MacApi.csprojAssemblyReference.cache
+/Users/edisonlee55/Documents/GitHub/YTSubConverterMac/MacApi/obj/Xamarin - Debug/MacApi.csproj.CoreCompileInputs.cache
+/Users/edisonlee55/Documents/GitHub/YTSubConverterMac/MacApi/obj/Xamarin - Debug/MacApi.dll
+/Users/edisonlee55/Documents/GitHub/YTSubConverterMac/MacApi/obj/Xamarin - Debug/MacApi.pdb

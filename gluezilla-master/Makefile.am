@@ -1,0 +1,2 @@
+EXTRA_DIST = LICENSE LICENSE.LGPL LICENSE.MPL
+SUBDIRS = build src tests/browser

@@ -1,0 +1,78 @@
+2008-07-24  Alp Toker  <alp@nuanti.com>
+
+	* Makefile.am: Include dom/* in dist to fix the Windows build.
+
+2008-04-18  Andreia Gaita <avidigal@novell.com> 
+
+	* include_extras/dom/nsIScriptGlobalObjectOwner.h: Javascript eval
+	  support
+
+2008-01-28  Andreia Gaita <avidigal@novell.com>
+
+	* idl_extras/nsIEmbedingSiteWindow2.idl, Makefile.am, make.cmd: 
+	Added nsIEmbedingSiteWindow2.idl
+
+2008-01-26  Andreia Gaita <avidigal@novell.com>
+
+	* idl_extras/nsIProxyObjectManager.idl: comment out nsProxyEvent header, 
+	it brings a bunch of useless dependencies when the only thing that's really
+	needed are three #defines.
+	* make.cmd: clean out directories before rebuilding.
+
+2008-01-26  Andreia Gaita <avidigal@novell.com>
+
+	* idl_extras/nsIProxyObjectManager.idl: Added
+
+2008-01-26  Andreia Gaita <avidigal@novell.com>
+
+	* make.cmd, Makefile: Add missing header generation
+
+2007-11-19  Wade Berrier  <wberrier@novell.com>
+
+	* Makefile: rename to Makefile.am, and add EXTRA_DIST
+	to include necessary bits for building on win32
+
+2007-11-06  Andreia Gaita <avidigal@novell.com>
+
+	* README.win32: update instructions to include bulding with cygwin on windows
+	* make.cmd: fix copy
+
+2007-11-06  Andreia Gaita <avidigal@novell.com>
+
+	* README.win32: instructions on how to setup up the sdk for building
+
+2007-09-26 Andreia Gaita <avidigal@novell.com>
+
+	* add helper script to setup up the runtime on 
+	windows (when using a non-local xulrunner)
+
+2007-09-26 Andreia Gaita <avidigal@novell.com>
+
+	* added missing header
+	* batch equivalent of makefile for windows
+
+2007-08-11 Andreia Gaita <avidigal@novell.com>
+
+	* Fix include tree to match the xpcom-devel 
+	package organization
+
+2007-06-25 Andreia Gaita <avidigal@novell.com>
+	
+	* Makefile: Minor changes to normalize calls
+
+2007-06-25 Andreia Gaita <avidigal@novell.com>
+
+	* Remove unused idl's, for now, to keep it nice
+	and clean. It's possible that they're going to be
+	needed later on, I'll add them then.
+	* Add another extra include not available as an idl
+	file - to use the nsAppShell object.
+
+2007-06-22 Andreia Gaita <avidigal@novell.com>
+
+	* Add yet more idl's to the list. Add a few
+	headers that mozilla doesn't export as idl
+	but that are in the public areas (7 headers
+	needed just to get a stupid reference to the
+	native mozilla widget (?!?))
+	

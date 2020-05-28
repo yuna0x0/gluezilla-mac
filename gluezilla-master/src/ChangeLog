@@ -1,0 +1,503 @@
+2009-10-01  Andreia Gaita  <avidigal@novell.com>
+
+	* Widget.cpp: fix return on BeginInvoke
+
+2009-05-13  Andreia Gaita  <avidigal@novell.com>
+
+	* Widget.[h|cpp]: BeginInvoke now checks if it should wait for a response
+	from the invoke call or not - evalScript calls might hang because the
+	browser doesn't pump the main loop if no mouse events happen on the window
+	and if the call is done in response to browser events, so the queue_pop
+	would hang forever. The queue is flushed prior to adding a new idle_call
+	so any previous responses are discarded.
+
+	* gluezilla.cpp: Return values from BeginInvoke is checked for errors - 
+	if there was an error, the Params object is not disposed, because an 
+	error condition means the invoke response was received before returning,
+	so the invoke call will still need this object. Also, clean up all 
+	data inside Params objects.
+
+2009-01-29  Andreia Gaita  <shana@jitted.com>
+
+	* BrowserWindow.cpp: null checks to fix crashes on shutdown. Fixes #469627
+	* Widget.[h|cpp]: Define appShell as a smart pointer so it does automatic
+	refcounting and xulrunner can refcount it internally, as well.
+
+2008-11-23  Andreia Gaita  <shana@jitted.com>
+
+	* Widget.*, gluezilla.*: Fix type of strings returned from script evaluation
+
+2008-11-23  Andreia Gaita  <shana@jitted.com>
+
+	* Widget.cpp: Don't navigate to about:blank by default, there's no need, and
+	this way we don't have to filter out events for this first load (and rendering
+	content works even if there is no initial document, which was the whole point
+	of this load anyway)
+
+2008-11-23  Andreia Gaita  <shana@jitted.com>
+
+	* Widget.cpp, BrowserWindow.*: Remove event listeners when shutting down.
+	Call both XPCOMShutdown and GRE_Shutdown on xul 1.8 (this might fix #429453)
+
+2008-11-22  Andreia Gaita  <shana@jitted.com>
+
+	* Widget.*, gluezilla.*: Separate initialization in 3 stages so events
+	  can be registered before the window is actually created
+
+2008-11-13  Andreia Gaita  <shana@jitted.com>
+
+	* BrowserWindow.cpp: Activate link hover status messages updates
+
+2008-10-14  Andreia Gaita  <avidigal@novell.com>
+
+	* Widget.h:
+	* gluezilla.h:
+	* gluezilla.cpp: Added method to retrieve a service manager pointer from
+	the gui thread.
+
+2008-09-10  Andreia Gaita <avidigal@novell.com> 
+
+	* Widget.cpp, gtkWidget.cpp: Use the widget's destroy event to call the
+	  quit routine.
+	* gluezilla.cpp: Quit the main loop only instead of the entire app
+
+2008-09-08  Andreia Gaita <avidigal@novell.com> 
+
+	* gluezilla.cpp, gluezilla.h: Return the version of xulrunner that's
+	  being used so I can distinguish which cache directory to use
+
+2008-08-29  Andreia Gaita <avidigal@novell.com>
+
+	* BrowserWindow.cpp, Widget.cpp, gluezilla.cpp: Check result codes
+	from ns* calls and and bail out if they fail.
+
+	* gluezilla.cpp: Addref document and webnavigation objects before
+	returning them to managed land.
+
+2008-08-29  Andreia Gaita <avidigal@novell.com>
+
+	* LocationProvider.cpp: Force dynamic loader to use a specific
+	minimum xulrunner version depending on which one it gets built with.
+
+2008-08-07  Andreia Gaita <avidigal@novell.com> 
+
+	* BrowserWindow.cpp: Remove cast macro calls that went walkies on gecko
+	  1.9. EOL fixes.
+	* windows.mak: Pass in the new defines to the windows build.
+	* Widget.cpp: If we're building against gecko 1.9:
+	  NS_XPCOMPROXY_CONTRACTID definition has been moved to an
+	  unavailable header, define it. AppShell appears to have
+	  disappeared, don't call it. Tweak the shutdown call to use the new
+	  api.
+	* LocationProvider.cpp: Don't call GRE_GetXPCOMPath on gecko 1.9, it
+	  was removed. EOL fixes.
+	* Makefile.am: Only use gluezilla_* headers if we're building against
+	  gecko 1.8
+	* interfaces.h: Tweak header include paths depending on which gecko
+	  version we're building against. EOL fixes.
+
+2008-06-11  Andreia Gaita <avidigal@novell.com> 
+
+	* BrowserWindow.cpp: Fix missing return
+
+2008-06-10  Andreia Gaita <avidigal@novell.com> 
+
+	* BrowserWindow.cpp, BrowserWindow.h: Disable uri context listener (not
+	  being used right now). Add context menu event listener, security
+	  change callback.
+	* gluezilla.h: Add context menu event and security change callback.
+	* interfaces.h: Add support for context menu event listener.
+
+2008-06-10  Andreia Gaita <avidigal@novell.com> 
+
+	* Widget.h: Fix mismatching calls
+
+2008-06-02  Andreia Gaita <avidigal@novell.com> 
+
+	* gtkWidget.cpp, Widget.cpp, Widget.h: Clean up
+
+2008-05-22  Andreia Gaita <avidigal@novell.com> 
+
+	* BrowserWindow.cpp, gluezilla.h: Add more xpcom helper objects for
+	  OnProgress
+
+2008-05-20  Andreia Gaita <avidigal@novell.com> 
+
+	* BrowserWindow.cpp: Added progress and request objects from the
+	  loading events. Track progress updates.
+	* gluezilla.h: Hook up new loading and progress events
+
+2008-04-18  Andreia Gaita <avidigal@novell.com> 
+
+	* gluezilla_nsIScriptContext.h, gluezilla_nsIScriptGlobalObject.h: Add
+	  eof newline
+	* gluezilla.h: Fix forward declaration
+
+2008-04-18  Andreia Gaita <avidigal@novell.com> 
+
+	* gluezilla_nsIScriptContext.h, gluezilla_nsIScriptGlobalObject.h,
+	  gluezilla2K5.vcproj: Javascript eval support: Added custom
+	  nsIScriptContext and nsIScriptGlobalObject headers; the
+	  xulrunner-sdk-provided ones are not frozen, not idl-generated, and
+	  pull in the entire private mozilla dependencies that we can't use,
+	  when what I really need is just the first call from each header
+	  anyway.
+	* BrowserWindow.cpp: Fix status change callback
+	* Widget.cpp, Widget.h: Added EvalScript for javascript eval support.
+	  Code cleanup.
+	* gluezilla.cpp: Added gluezilla_evalScript for javascript eval
+	  support. Code cleanup.
+	* interfaces.h: New headers included for javascript eval support
+	* gluezilla.h: Added gluezilla_evalScript for javascript eval support.
+	  Change OnStatusChange signature to use unicode strings.
+
+2008-04-07  Andreia Gaita <avidigal@novell.com> 
+
+	* gluezilla.cpp, gluezilla.h: Use gluezilla_init for platform initialization
+	code only, browser widget initialization code moved to createBrowserWindow.
+	Fixes support of more than one embedded browser instance.
+
+2008-03-27  Andreia Gaita  <avidigal@novell.com>
+
+	* gluezilla.cpp, gluezilla.h: Debug helper method change
+	* Widget.cpp: Only resize the gtk widget if we're running on a platform
+	that needs it.
+
+2008-03-04  Andreia Gaita  <avidigal@novell.com>
+
+	* gluezilla.*: fix getServiceManager to return the object directly.
+
+2008-03-02  Andreia Gaita  <avidigal@novell.com>
+
+	* interfaces.h: Seems xulrunner 1.9 removed some headers with defines
+	that I was using to detect what type of toolkit it was running on. Removed
+	the offending header from the include list, and rely on OS defines only 
+	(*sigh*)
+
+	* gluezilla.h: Clean out a bunch of events that are not being used. Change
+	the OS detection defines. Added new managed string support, soon to replace
+	old string methods.
+
+	* gluezilla.cpp, Widget.*: Change OS detection defines. Fix platform detection
+	code so it runs happily in gtk apps as well.
+
+	* EventListener.cpp: Send the event-affected node up to the managed side so
+	it can be matched it to a managed object and fired properly.
+
+2008-01-30  Andreia Gaita <avidigal@novell.com>
+
+	* windows.mak: add local directory for includes.
+	* BrowserWindow.cpp: allocate event name differently, msvc doesn't
+	like the old way.
+	* Widget.cpp: only activate and deactivate browser on non-windows
+	systems, windows doesn't like it.
+
+2008-01-28  Andreia Gaita <avidigal@novell.com>
+
+	* windows.mak: Updated with new EventListener files
+
+2008-01-28  Andreia Gaita <avidigal@novell.com>
+
+	* EventListener.cpp, EventListener.h: Forgot to add them :p
+
+2008-01-28  Andreia Gaita <avidigal@novell.com>
+
+	* EventListener.*: Move event handlers out of BrowserWindow and into
+	a separate handler class. This class calls events directly (does not
+	go through Widget, which was a pointless call anyway). Add focus. blur,
+	load and unload handlers.
+
+	* BrowserWindow.*: Relay events to the EventListener class, and save
+	instances on a list for later release.
+	Use nsIEmbeddingSiteWindow2 interface to get blur events.
+	Fire Status text change events.
+
+	* Widget.*: Call Activate() on focus, and Deactivate() on blur. 
+	According to the docs, it should only be called if the browser is shown, 
+	but focus doesn't work correctly without it.
+	Remove Event* methods that are not needed anymore (events are called
+	directly through EventListener)
+
+	* Makefile.am: Added new classes (and a missing header).
+
+	* interfaces.h: move print macros to here
+
+	* gluezilla.h: Add Load and Unload, rearrange callbacks
+
+2008-01-26  Andreia Gaita <avidigal@novell.com>
+
+	* Widget.cpp: Add proxy defines in case we're building against a local 
+	xulrunner in build/ (see ChangeLog in build/)
+
+2008-01-24  Andreia Gaita <avidigal@novell.com>
+
+	* BrowserWindow.cpp (OnStateChange): send progress events up
+
+2008-01-18  Andreia Gaita <avidigal@novell.com>
+
+	* Widget.cpp: don't cache navigation and document objects.
+
+2008-01-18  Andreia Gaita <avidigal@novell.com>
+
+	* gluezilla.cpp, gluezilla.h, Widget.h: add platform support
+	* BrowserWindow.cpp, interfaces.h: Use specific widget define instead
+	of generic os define to detect gtk
+
+2008-01-10  Wade Berrier  <wberrier@novell.com>
+
+	* Makefile.am: include *.manifest in EXTRA_DIST
+
+2008-01-10  Andreia Gaita <avidigal@novell.com>
+
+	* gluezilla.dll.nonsp1.manifest, gluezilla.dll.nonsp1.debug.manifest:
+	custom manifests that reference the original (non sp1) crt so that
+	gluezilla can run on un-updated XPs even if compiled with an SP1
+	platform SDK.
+	
+	* windows.mak: Ignore the generated manifest file, and use our own
+	manifest files instead.
+	
+2008-01-06  Andreia Gaita <avidigal@novell.com>
+
+	* Widget.h, Widget.cpp, gluezilla.h, gluezilla.cpp: Add method to get
+	proxies for any object. It's not enough to use proxies for the top
+	document object, as any other object retrieved through it with xpcom
+	will not come proxied.
+
+	Note: interface marshalling will addref objects asap, which happens 
+	before we can proxy them properly, so the addrefs and releases will
+	happen on the wrong thread. Things only go wrong if the object is
+	manipulated on the wrong thread and if that forces a gui update, 
+	though, so it's not (too) bad.
+
+2008-01-04  Andreia Gaita <avidigal@novell.com>
+
+	* Widget.cpp: fix calls between threads, now that we can actually
+	go through this from different places.
+
+2007-12-25  Andreia Gaita <avidigal@novell.com>
+	
+	* Wrap mozilla dom objects around proxies to allow winforms to call 
+	methods	accross threads (from the winforms ui thread to the main 
+	mozilla ui thread).
+
+2007-11-19  Wade Berrier  <wberrier@novell.com>
+
+	* Makefile.am: include windows.mak in EXTRA_DIST
+
+2007-11-18  Andreia Gaita <avidigal@novell.com>
+
+	* windows.mak: embed manifest file in a release build so windows 
+	actually loads dependencies correctly
+
+2007-11-09  Andreia Gaita <avidigal@novell.com>
+
+	* BrowserWindow.cpp: Disable event calls on OnStateChange, it's unstable
+
+2007-11-08  Andreia Gaita <avidigal@novell.com>
+
+	* BrowserWindow.cpp: When loading, invoke events on the managed side
+	so it can track progress and url changes.
+	* gluezilla.h, Widget.h: remove unneeded events, fix parameters.
+	* interfaces.h: add nsIURI interface, OnLocationChanged needs it
+	* Widget.cpp: add StateChange and LocationChange implementations to
+	call up to the managed side.
+
+2007-11-06  Andreia Gaita <avidigal@novell.com>
+
+	* windows.mak: windows makefile for command line building with nmake
+	* gluezilla2k5.vcproj: add release configuration, finetune settings
+
+2007-11-06  Andreia Gaita <avidigal@novell.com>
+
+	* Disable debug messages when enable-optimize=yes (non-debug build)
+	* gluezilla.*: add access to the WebNavigation object, for future 
+			direct interface access
+
+2007-11-05  Andreia Gaita <avidigal@novell.com>
+
+	* LocationProvider.*, Widget.cpp: GRE_GetXPComPath() searches for a 
+	runtime with a fixed version equal to the one it was built against,
+	so only use it to search for a local runtime, and if it fails, use
+	GRE_GetPathWithProperties() to get a runtime with a version >= 1.8,
+	independently of whatever version it was initially built with.
+
+2007-10-31  Andreia Gaita  <avidigal@novell.com>
+
+	* gluezilla.*,Widget.h: Receive user data dir to store local data.
+	* LocationProvider.cpp: Use the user data dir for component and xpti
+	registry. Use the mozilla directories to load plugins and other shared
+	mozilla things. No need to use local directories anymore.
+
+2007-10-30  Andreia Gaita  <avidigal@novell.com>
+
+	* gluezilla.*, Widget.*: add blur entry point to catch
+	when the webbrowser control loses focus
+
+2007-10-18  Wade Berrier  <wberrier@novell.com>
+
+	* Makefile.am: Add missing headers to EXTRA_DIST
+
+2007-10-18  Andreia Gaita  <avidigal@novell.com>
+
+	* Widget.cpp: fix pointer cast for 64-bit arch, fix asynch 
+	return value
+
+2007-10-07  Andreia Gaita  <avidigal@novell.com>
+
+	* Implement helper methods for the nsString class, to 
+	initialize/destroy nsString instances and get/set the actual
+	chars.
+	All dom interface methods that have string parameters
+	take a nsString class, which comes from these helper
+	methods.
+	Change the exit to really quit the gtk thread.
+	Add dom interface support.
+
+2007-09-23  Andreia Gaita  <avidigal@novell.com>
+
+	* Implement dialog popups through the custom 
+	PromptService - alert, alertcheck, confirm,
+	confirmcheck, confirmex, prompt, promptpassword,
+	promptusernameandpassword, select
+	Fix event naming.
+	BrowserWindow is now an interface, don't know if
+	that is to keep.
+
+2007-09-13  Andreia Gaita  <avidigal@novell.com>
+
+	* add enumeration to control focus
+	* remove blur method (not needed)
+	* fix bad parameter on gtk_shutdown
+
+2007-09-12  Andreia Gaita  <avidigal@novell.com>
+
+	* GtkWidget.cpp: Fix keyboard handling
+	* Widget.*, xulbrowser.*: 
+		- setup shutdown routines
+		- do a bit more logging, prepare for non-debug builds
+
+Mon Aug 20 19:45:18 CEST 2007 Paolo Molaro <lupus@ximian.com>
+
+	* Widget.cpp: set the parent earlier in CreateBrowserWindow ().
+
+2007-08-09 Andreia Gaita <avidigal@novell.com>
+
+	* LocationProvider.*: Custom directory service
+	implementation to control where profiles, defaults
+	and components are loaded, and where the component
+	registry is saved. This is so that components can
+	be loaded from the xulrunner lib path but the 
+	registry is saved to the application dir.
+	
+	Saving and loading profiles from the application
+	dir also enables https, since it needs to save 
+	and load	the cert.db and similar files somewhere 
+	or else https is not initialized 
+	(https://bugzilla.mozilla.org/show_bug.cgi?id=309877)
+	
+	* BrowserWindow.*: Navigation control. Page reloading.
+	
+	* Widget.*: Custom GRE startup to use the custom
+	directory service provider (LocationProvider) instead
+	of the default provider.
+	Implement more events.
+	
+	* xulbrowser.*: Initialize library with application
+	dir (might come in handy later). Navigation control
+	
+
+2007-07-30 Andreia Gaita <avidigal@novell.com>
+
+	* Implement custom prompt and security dialog service
+	  components.
+	  Implement mouse, key and focus handlers and callbacks.
+	  Implement Focus and Activation management.
+	  Setup generic event callback (for monitoring)
+	  Separate ns* interface includes
+
+2007-07-21 Andreia Gaita <avidigal@novell.com>
+	
+	* Implement IEmbeddedSiteWindow for sizing and title
+	support. Implement resizing. Normalize width and height.
+	Fix casts.
+	Add vstudio 2005 project
+
+2007-07-05 Andreia Gaita <avidigal@novell.com>
+
+	* Clean up/reduce ifdef clutter/remove duplicate code 
+	on the gtk-related portions by invoking a "delegate" 
+	to call methods on the widget - the delegates handle 
+	the gtk stuff generically so things are nice and 
+	shiny and non-duplicated all over the place.
+	
+2007-07-04 Andreia Gaita <avidigal@novell.com>
+
+	* Fix the navigate method; use the embedded string api
+	through nsEmbedString; add an empty debug call just to
+	force load the library and to make it easier to debug
+
+2007-07-04 Andreia Gaita <avidigal@novell.com>
+
+	* BrowserWindow.cpp, BrowserWindow.h, xulbrowser.h: 
+	Change the include paths of non-frozen interfaces to use
+	the xulrunner-devel package tree.
+
+2007-06-25 Andreia Gaita <avidigal@novell.com>
+
+	* BrowserWindow.cpp: 
+	- Apart from a few changes in variable 
+	naming (out with the prefixes, eek), add initializations 
+	for session history and window creator. 
+	- When on gtk, get the native	mozilla widget that is the 
+	real drawing surface (not used for now, might come in handy
+	later).
+	- Save the current uri in the object so it can be	reloaded 
+	later (overload to the Navigate method).
+	- Add a lot of debug printlines (gtk only).
+	- Add implementation of nsIWindowCreator's CreateChromeWindow 
+	(this is gtk only as far as I can tell, windows does not 
+	need this, and xlib toolkit probably doesn't, either).
+
+	* BrowserWindow.h: normalize includes and variable naming, 
+	add extra Navigate overload and uri 
+	getters/setters.
+	
+	* gtkWidget.cpp/h: Inherit it from window so it can be
+	self-suficient. Add a new window signal (not used yet).
+	Add a new constructor so it can also use a normal gtk window
+	as parent instead of a XID.
+	
+	* Widget.cpp/h: Add initialization of AppShell. This is 
+	absolutely required for the browser widget to work on 
+	linux, and is not mentioned *anywhere*. <grrrr>
+	Add thread support on linux/gtk (this gtk widget code
+	should go somewhere else...)
+	
+	* xulbrowser.cpp/h: Add thread to run the gtk main loop, 
+	and reroute all requests on linux/gtk to that thread so 
+	that things actually *work*.
+	New params class to help pass parameters to the gtk gui
+	thread.
+	
+2007-06-22 Andreia Gaita <avidigal@novell.com>
+
+	* gtkWidget.cpp, gtkWidget.h: a custom gtk widget
+	to feed to mozilla (just on linux). It takes
+	a native window handle on construction, so
+	it bootstraps onto an existing X window instead
+	of requiring a top level gtk window.
+	
+	* Change browser init sequence on linux to call
+	the gtk_main loop, catch the expose event on the
+	widget and create the browser there, raising
+	an OnWidgetLoaded event when done. On Windows, do
+	everything normal but also raise the OnWidgetLoaded
+	event.
+	The OnWidgetLoaded signals that initialization is done.
+	Start catching events on the browser (at least on windows,
+	still no luck getting it to show up on linux)
+
+2007-06-18	Andreia Gaita	<avidigal@novell.com>
+
+	* initial checkin.
