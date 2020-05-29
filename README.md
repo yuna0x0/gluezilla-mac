@@ -17,6 +17,10 @@ $ brew install nspr
 
 Mozilla NSS
 $ brew install nss
+
+XULRunner 2.0
+(XULRunner will be installed directly from the provided build script)
+(Or you can install it manually by copying 'XUL.framework' to '/Library/Frameworks/')
 ```
 `make`, `autoconf`, `automake`, `libtool` should also be installed.
 
@@ -33,6 +37,21 @@ Build libgluezilla without installing it by passing the `--no-install` flag:
 $ ./build-libgluezilla --no-install
 ```
 
+---
+
+You can also build libgluezilla maually by going to `gluezilla-master` folder:
+```
+$ cd gluezilla-master
+```
+Invoke configure and make:
+```
+$ ./autogen.sh --enable-optimize=yes
+$ make
+```
+Install libgluezilla:
+```
+$ make install
+```
 
 ## Install the Library Binary
 > Notice: Install only the Library Binary might not work, as libgluezilla depends on some libraries that your system might not yet install.
