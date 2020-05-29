@@ -28,7 +28,7 @@ $ ./build-install.command
 ```
 > If there's an execute permission issue, run `chmod +x build-install.command` to make it executable.
 
-Build libgluezilla without install it by passing the `--no-install` flag:
+Build libgluezilla without installing it by passing the `--no-install` flag:
 ```
 $ ./build-install.command --no-install
 ```
