@@ -22,15 +22,15 @@ $ brew install nss
 
 ---
 
-Double click `build-install.command` in Finder or use the following command to build and install libgluezilla:
+Use the following command to build and install libgluezilla:
 ```
-$ ./build-install.command
+$ ./build-libgluezilla
 ```
-> If there's an execute permission issue, run `chmod +x build-install.command` to make it executable.
+> If there's an execute permission issue, run `chmod +x build-libgluezilla` to make it executable.
 
 Build libgluezilla without installing it by passing the `--no-install` flag:
 ```
-$ ./build-install.command --no-install
+$ ./build-libgluezilla --no-install
 ```
 
 
