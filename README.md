@@ -41,5 +41,5 @@ $ ./build-install.command --no-install
 
 Copy every item in `libgluezilla-mac-bin` to `/usr/local/lib/`.
 ```
-$  cp -a libgluezilla-mac-bin/. /usr/local/lib/
+$ cp -a libgluezilla-mac-bin/. /usr/local/lib/
 ```
