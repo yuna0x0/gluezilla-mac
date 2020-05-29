@@ -1,5 +1,0 @@
-/Users/edisonlee55/Documents/GitHub/YTSubConverterMac/mono/mcs/class/Mono.WebBrowser/bin/Xamarin - Debug/Mono.WebBrowser.dll
-/Users/edisonlee55/Documents/GitHub/YTSubConverterMac/mono/mcs/class/Mono.WebBrowser/bin/Xamarin - Debug/Mono.WebBrowser.pdb
-/Users/edisonlee55/Documents/GitHub/YTSubConverterMac/mono/mcs/class/Mono.WebBrowser/obj/Xamarin - Debug/Mono.WebBrowser-net_4_5.csproj.CoreCompileInputs.cache
-/Users/edisonlee55/Documents/GitHub/YTSubConverterMac/mono/mcs/class/Mono.WebBrowser/obj/Xamarin - Debug/Mono.WebBrowser.dll
-/Users/edisonlee55/Documents/GitHub/YTSubConverterMac/mono/mcs/class/Mono.WebBrowser/obj/Xamarin - Debug/Mono.WebBrowser.pdb
