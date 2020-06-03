@@ -18,7 +18,7 @@ $ brew install nspr
 Mozilla NSS
 $ brew install nss
 
-XULRunner 2.0
+XULRunner 2.0 (with libxul-embedding.pc pkg-config file installed)
 (XULRunner will be installed directly from the provided build script)
 (Or you can install it manually by copying 'XUL.framework' to '/Library/Frameworks/')
 ```
